@@ -1,4 +1,4 @@
-mport sqlite3
+import sqlite3
 from nltk.tokenize import word_tokenize, sent_tokenize
 import nltk.corpus
 import nltk
