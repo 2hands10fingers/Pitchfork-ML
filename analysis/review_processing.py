@@ -2,7 +2,6 @@ import sqlite3
 import nltk.corpus
 import nltk
 import numpy
-import pandas
 import csv
 import os
 import pickle
@@ -51,7 +50,7 @@ def looper(loop):
 	for i in loop: print(i)
 
 database = 'database.sqlite'
-folder = 'home/kevin/Projects/datasets' #designate where your DB is *IMPORTANT*
+folder = '' #designate where your DB is *IMPORTANT*
 
 filepath = f'/{folder}/{database}'
 conn = sqlite3.connect(filepath)
