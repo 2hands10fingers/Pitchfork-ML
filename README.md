@@ -9,6 +9,7 @@ Produce a mock Pitchfork Review as learned my our Machine Learning algo.
 ### Data break down
   
   SD = Standard Deviation
+  
   avg = average
   
   Paragraphs
