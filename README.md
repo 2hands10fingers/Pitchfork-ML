@@ -2,7 +2,7 @@
 Machine Learning applied to Pitchfork dataset using Natural Language Processing.
 
 ## Goal
-Produce a mock Pitchfork Review as learned my our Machine Learning algo.
+Produce a mock Pitchfork Review as learned by our Machine Learning algo.
 
 ## Hypothesis
 Our AI/Machine will produce a review by checking against the statistical data we accrue during review analysis so as to gauge accuracy.
