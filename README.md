@@ -4,6 +4,9 @@ Machine Learning applied to Pitchfork dataset using Natural Language Processing.
 ## Goal
 Produce a mock Pitchfork Review as learned my our Machine Learning algo.
 
+## Hypothesis
+Our AI/Machine will produce a review by checking against the statistical data we accrue during review analysis so as to gauge accuracy.
+
 ## Data management process
 
 ### Data break down
@@ -16,25 +19,25 @@ Produce a mock Pitchfork Review as learned my our Machine Learning algo.
   
   - We identify and break up each review by paragraphs
     - We will determine the SD of how many paragraphs are featured in each review
-    - Determine average number of each paragraphs per review
+    - Determine avg number of each paragraphs per review
   
   Sentences
   
   - Identify the avg # of sentences per these identified paragraphs.
-  - Identify the avg/SD # of sentences
+  - Identify the avg/SD # of sentences per review
   
   Words
    
    - avg number of words per sentence of each paragraph (excluding special marks)
-   - Identify trends of the parts of speech used for every sentence
+   - Identify trends of the parts of speech used for every sentence (i.e., nouns, verbs, pronouns, etc.)
    
   Cleanup
   
-  - We'll need to think about cleaning up the data for any superflous content
+  - We'll need to think about cleaning up the data for any superfluous content
     - Punctuation is one of them
     - Others have yet to be determined
 
-### Stoage
+### Storage
   Pickling
    - We're using the method of pickling to flatten the data for easier access since there's _a lot_ of it.
 
@@ -43,7 +46,7 @@ Produce a mock Pitchfork Review as learned my our Machine Learning algo.
 ### Algos
    
    - Mention of using Naive Bayes so far.
-   - A more appropriate algo may be chosen upon further researching the data
+   - A more appropriate algo may be chosen upon further research
    
 ### ???
    
