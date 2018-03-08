@@ -34,18 +34,18 @@ Produce a mock Pitchfork Review as learned my our Machine Learning algo.
     - Punctuation is one of them
     - Others have yet to be determined
 
-## Stoage
+### Stoage
   Pickling
    - We're using the method of pickling to flatten the data for easier access since there's _a lot_ of it.
 
-### Methods
+## Methods
 
-## Algos
+### Algos
    
    - Mention of using Naive Bayes so far.
    - A more appropriate algo may be chosen upon further researching the data
    
-## ???
+### ???
    
    - Who can say? Machine Learning is difficult work!
    
