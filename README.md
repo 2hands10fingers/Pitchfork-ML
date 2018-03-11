@@ -36,6 +36,7 @@ Our AI/Machine will produce a review by checking against the statistical data we
   - We'll need to think about cleaning up the data for any superfluous content
     - Punctuation is one of them
     - Others have yet to be determined
+    - Here's a helpful article on it: https://machinelearningmastery.com/clean-text-machine-learning-python/
 
 ### Storage
   Pickling
