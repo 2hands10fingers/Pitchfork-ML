@@ -1,15 +1,13 @@
-# import nltk
-# import re
-# from nltk.tokenize import word_tokenize, sent_tokenize
-
+from collections import Counter
 import sqlite3
-import statistics
 import re
-from nltk import sent_tokenize
-import json
+import statistics
+from nltk import sent_tokenize, pos_tag
+from json import dump, load
+
 
 database = 'database.sqlite'
-folder = '' # Wherever you're extracting your DB from. *IMPORTANT*
+folder = 'Volumes/TonoDrive'
 filepath = f'/{folder}/{database}'
 conn = sqlite3.connect(filepath)
 
@@ -34,55 +32,59 @@ for review in content:
 
         reviews.append(stored_parsed_review)
 
-# ---- WORD TOKENIZATION
-print('Parsing sentences for words. This will take a while.')
-reviews_sent_lengths = [i["length"] for i in reviews]
-review_sent_word_length = []
-
-
-for i in reviews:
-    review_sentences = (i['review_sentences'])
-
-    for review_sentence in review_sentences:
-        punctuations = ['(', ')', '?', ':', ';', ',',
-                        '.', '!', '/', '"', "'"
-                        ]
-        other_filter = ['”', "’", '“', '’re', '’s', '’ve', '', '’t']
-
-        keep_hyphenations_and_quotes = re.findall(r"\w+(?:[-']\w+)*|'|[-.(]+|\S\w*",
-                                                  str(review_sentence))
-        remove_punctuation = [''.join(x for x in par if x not in punctuations) for par in keep_hyphenations_and_quotes]
-        clear_empty_strings = list(filter(None, remove_punctuation))
-        clear_spec_chars_contracts = list(filter(lambda x: x not in other_filter, clear_empty_strings))
-
-        review_sentences_list.append(clear_spec_chars_contracts)
-        review_sent_word_length.append(len(clear_spec_chars_contracts))
+review_sent_lengths = [i["reviews"] for i in reviews]
 
 print('Saving to reviews_parsed.json.\n')
-with lzma.open('reviews_parsed.json', 'wb') as file:
-    file.write(bytes(dumps(reviews), "UTF-8"))
-
-print('Saving to reviews_sentences.json\n')
-with lzma.open('reviews_sentences.json', 'wb') as outfile:
-    # json.dump(review_sentences_list, outfile)
-    outfile.write(bytes(dumps(review_sentences_list), "UTF-8"))
+with open('reviews_parsed.json', 'w') as file:
+    dump(reviews, file)
 
 
-# ---- BREAKING UP INTO PARTS OF SPEECH
-# --- SECTION 1
+# ---- WORD TOKENIZATION
+print('Parsing sentences for words. This will take a while.')
+
+review_sent_word_length = []
+review_sentences_list = []
+print("Opening...")
+with open('reviews_parsed.json', 'rb') as reviews:
+    # reviews_sent_lengths = [i["length"] for i in load(reviews)]
+    for review in load(reviews):
+        review_sentences = review["review_sentences"]
+
+        # print(review_sentences)
+
+        for review_sentence in review_sentences:
+            punctuations = ['(', ')', '?', ':', ';', ',',
+                            '.', '!', '/', '"', "'"
+                                                        ]
+            other_filter = ['”', "’", '“', '’re', '’s', '’ve', '', '’t']
+
+            keep_hyphenations_and_quotes = re.findall(r"\w+(?:[-']\w+)*|'|[-.(]+|\S\w*",
+                                                  str(review_sentence))
+            remove_punctuation = [''.join(x for x in par if x not in punctuations) for par in keep_hyphenations_and_quotes]
+            clear_empty_strings = list(filter(None, remove_punctuation))
+            clear_spec_chars_contracts = list(filter(lambda x: x not in other_filter, clear_empty_strings))
+            review_sentences_list.append(clear_spec_chars_contracts)
+            review_sent_word_length.append(len(clear_spec_chars_contracts))
+
+print('Saving to reviews_sentences_words.json\n')
+with open('reviews_sentences_words.json', 'w') as outfile:
+    dump(review_sentences_list, outfile)
+
+#
+# # ---- BREAKING UP INTO PARTS OF SPEECH
+# # --- SECTION 1
 
 pos_list = []
-with open('reviews_sentences.json', 'r') as reviews_file:
+with open('reviews_sentences_words.json', 'r') as reviews_file:
     the_data = load(reviews_file)
     print("Grabbing the data and turning it into parts of speech.")
     for sentence in the_data:
         x = pos_tag(sentence)
         pos_list.append(x)
 
-
 print('Saving all the data to parts_of_speech_review_sentences.json')
-with lzma.open('parts_of_speech_review_sentences.json', 'wb') as outfile:
-    outfile.write(bytes(dumps(pos_list), "UTF-8"))
+with open('parts_of_speech_review_sentences.json', 'w') as outfile:
+    dump(pos_list, outfile)
 
 # --- SECTION 2
 # ---- Determinging the average number of POS!
@@ -90,6 +92,7 @@ with lzma.open('parts_of_speech_review_sentences.json', 'wb') as outfile:
 parts_of_speech = []
 with open('parts_of_speech_review_sentences.json', 'r') as pos:
     pos_data = load(pos)
+
     for sentence in pos_data:
         pos_sent_list = [part_of_speech[1] for part_of_speech in sentence]
         count_parts_speech_per_sentence = Counter(pos_sent_list)
@@ -102,8 +105,8 @@ average_pos_per_sentence = {k: v/N for k, v in total.items()}
 
 print(f"Word average per sentence: {statistics.mean(review_sent_word_length)}")
 print(f"Word standard deviation per sentence: {statistics.stdev(review_sent_word_length)}")
-print(f"Sentence average length: {statistics.mean(reviews_sent_lengths)}")
-print(f"Sentence standard deviation: {statistics.stdev(reviews_sent_lengths)}")
+# print(f"Sentence average length: {statistics.mean(reviews_sent_lengths)}")
+# print(f"Sentence standard deviation: {statistics.stdev(reviews_sent_lengths)}")
 print(f"Which means 11-45 words for 13-33 sentences")
 print('Which means anywhere from 143 - 1,485 words per review')
 print(average_pos_per_sentence)
